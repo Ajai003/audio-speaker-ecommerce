@@ -1,37 +1,33 @@
-import { Geist, Geist_Mono, Roboto_Slab, Inter } from "next/font/google"
+import { Inter, Geist_Mono } from "next/font/google";
 
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const interHeading = Inter({subsets:['latin'],variable:'--font-heading'});
-
-const robotoSlab = Roboto_Slab({subsets:['latin'],variable:'--font-serif'});
-
-const fontSans = Geist({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
-})
+  variable: "--font-heading",
+});
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-})
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", fontSans.variable, fontMono.variable, "font-serif", robotoSlab.variable, interHeading.variable)}
+      className={cn(
+        "dark antialiased",
+        inter.variable,
+        fontMono.variable
+      )}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body className="bg-[#1a1a1a] font-sans">{children}</body>
     </html>
-  )
+  );
 }

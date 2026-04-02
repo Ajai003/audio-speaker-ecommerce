@@ -1,19 +1,24 @@
-import { Button } from "@/components/ui/button"
+import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import HeadphoneScroll from "@/components/HeadphoneScroll";
+import FeaturesSection from "@/components/FeaturesSection";
+import ProductShowcase from "@/components/ProductShowcase";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Zenith X — Pure Sound, Precision Engineering",
+  description:
+    "Experience the next generation of premium audio. Zenith X headphones deliver unparalleled sound clarity with titanium drivers, active noise cancellation, and 40-hour battery life.",
+};
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+    <main className="relative min-h-screen bg-[#1a1a1a]">
+      <Navbar />
+      <HeadphoneScroll />
+      <FeaturesSection />
+      <ProductShowcase />
+      <Footer />
+    </main>
+  );
 }
