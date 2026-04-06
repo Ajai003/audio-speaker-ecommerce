@@ -8,10 +8,10 @@
   "scss.lint.unknownAtRules": "ignore",
   "postcss.lint.unknownAtRules": "ignore",
   "files.associations": {
-    "app/**/*.css": "postcss",
-    "components/**/*.css": "postcss",
-    "lib/**/*.css": "postcss",
-    "*.css": "postcss"
+    "app/**/*.css": "tailwindcss",
+    "components/**/*.css": "tailwindcss",
+    "lib/**/*.css": "tailwindcss",
+    "*.css": "tailwindcss"
   },
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"]

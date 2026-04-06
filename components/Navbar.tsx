@@ -2,12 +2,17 @@
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
+import Link from "next/link";
+
+const MotionLink = motion.create(Link);
 
 const navLinks = [
-  { label: "Products", href: "#products" },
-  { label: "Features", href: "#features" },
-  { label: "About", href: "#about" },
-  { label: "Support", href: "#support" },
+  { label: "Products", href: "/products" },
+  { label: "Build Audio", href: "/build-audio" },
+  { label: "Cart", href: "/cart" },
+  { label: "Wishlist", href: "/wishlist" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -55,14 +60,14 @@ export default function Navbar() {
           {/* Desktop Links */}
           <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="group relative px-4 py-2 text-sm font-light tracking-wide text-white/60 transition-colors duration-300 hover:text-white"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-white/40 transition-all duration-300 group-hover:w-3/4" />
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -112,7 +117,7 @@ export default function Navbar() {
         transition={{ duration: 0.3 }}
       >
         {navLinks.map((link, i) => (
-          <motion.a
+          <MotionLink
             key={link.label}
             href={link.href}
             className="text-2xl font-light tracking-wide text-white/80 transition-colors hover:text-white"
@@ -122,7 +127,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           >
             {link.label}
-          </motion.a>
+          </MotionLink>
         ))}
         <motion.button
           className="mt-4 rounded-full bg-white/10 px-8 py-3 text-sm font-medium tracking-wide text-white"
