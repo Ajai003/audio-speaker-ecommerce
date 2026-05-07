@@ -2,6 +2,8 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CreepyButton from "@/components/ui/creepy-button";
+import ElectricBorder from "@/components/ui/ElectricBorder";
 import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
 
@@ -15,26 +17,26 @@ export default function ProductDetails() {
       <div className="mx-auto max-w-7xl px-6 pt-32 pb-24 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
           {/* Image Section */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="group relative overflow-hidden rounded-3xl bg-[#121212]/50 p-8 shadow-2xl shadow-black/80 ring-1 ring-white/10"
-          >
-            <div className="flex h-[400px] items-center justify-center sm:h-[500px]">
-                <motion.img
-                  src="/ezgif-16184cd03497a2b4-jpg/ezgif-frame-100.jpg"
-                  alt="Product"
-                  className="h-full object-contain transition-transform duration-700 group-hover:scale-110"
-                  initial={{ y: 20 }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1, delay: 0.2 }}
-                />
-            </div>
-            
-            {/* Subtle glow effect */}
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
-          </motion.div>
+          <ElectricBorder color="rgba(255,255,255,0.35)" speed={0.8} chaos={0.06} borderRadius={24}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="group relative overflow-hidden rounded-3xl bg-[#121212]/50 p-8 shadow-2xl shadow-black/80 ring-1 ring-white/10"
+            >
+              <div className="flex h-[400px] items-center justify-center sm:h-[500px]">
+                  <motion.img
+                    src="/ezgif-16184cd03497a2b4-jpg/ezgif-frame-100.jpg"
+                    alt="Product"
+                    className="h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                    initial={{ y: 20 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                  />
+              </div>
+              <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+            </motion.div>
+          </ElectricBorder>
 
           {/* Content Section */}
           <motion.div
@@ -83,12 +85,12 @@ export default function ProductDetails() {
             </div>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <button className="flex-1 rounded-full bg-white px-8 py-4 text-sm font-bold text-black transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] active:scale-95">
+              <CreepyButton className="flex-1 rounded-full bg-white px-8 py-4 text-sm font-bold text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] active:scale-95">
                 Add to Cart
-              </button>
-              <button className="flex-1 rounded-full border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-all duration-300 hover:bg-white/10 hover:border-white/20 active:scale-95">
+              </CreepyButton>
+              <CreepyButton className="flex-1 rounded-full border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-all duration-300 hover:bg-white/10 hover:border-white/20 active:scale-95">
                 Add to Wishlist
-              </button>
+              </CreepyButton>
             </div>
           </motion.div>
         </div>

@@ -1,12 +1,19 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { animate, motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import CreepyButton from "@/components/ui/creepy-button";
 
 const MotionLink = motion.create(Link);
 
-const navLinks = [
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+const navItems: NavItem[] = [
   { label: "Products", href: "/products" },
   { label: "Build Audio", href: "/build-audio" },
   { label: "Cart", href: "/cart" },
@@ -16,27 +23,105 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const navRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoverX, setHoverX] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollY } = useScroll();
+
+  // Refs for the "light" positions so we can animate them imperatively
+  const spotlightX = useRef(0);
+  const ambienceX = useRef(0);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
 
+  useEffect(() => {
+    if (!navRef.current) return;
+    const nav = navRef.current;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = nav.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      setHoverX(x);
+      // Direct update for immediate feedback
+      spotlightX.current = x;
+      nav.style.setProperty("--spotlight-x", `${x}px`);
+    };
+
+    const handleMouseLeave = () => {
+      setHoverX(null);
+      // When mouse leaves, spring the spotlight back to the active item
+      const activeItem = nav.querySelector(`[data-index="${activeIndex}"]`);
+      if (activeItem) {
+        const navRect = nav.getBoundingClientRect();
+        const itemRect = activeItem.getBoundingClientRect();
+        const targetX = itemRect.left - navRect.left + itemRect.width / 2;
+
+        animate(spotlightX.current, targetX, {
+          type: "spring",
+          stiffness: 200,
+          damping: 20,
+          onUpdate: (v) => {
+            spotlightX.current = v;
+            nav.style.setProperty("--spotlight-x", `${v}px`);
+          },
+        });
+      }
+    };
+
+    nav.addEventListener("mousemove", handleMouseMove);
+    nav.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      nav.removeEventListener("mousemove", handleMouseMove);
+      nav.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [activeIndex]);
+
+  // Handle the "Ambience" (Active Item) Movement
+  useEffect(() => {
+    if (!navRef.current) return;
+    const nav = navRef.current;
+    const activeItem = nav.querySelector(`[data-index="${activeIndex}"]`);
+
+    if (activeItem) {
+      const navRect = nav.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      const targetX = itemRect.left - navRect.left + itemRect.width / 2;
+
+      animate(ambienceX.current, targetX, {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        onUpdate: (v) => {
+          ambienceX.current = v;
+          nav.style.setProperty("--ambience-x", `${v}px`);
+        },
+      });
+    }
+  }, [activeIndex]);
+
+  const handleItemClick = (item: NavItem, index: number) => {
+    setActiveIndex(index);
+  };
+
   return (
     <>
-      <motion.nav
-        className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
+      <motion.header
+        className={cn(
+          "fixed top-0 left-0 z-50 w-full transition-all duration-500",
           scrolled
             ? "glass border-b border-white/5 shadow-2xl shadow-black/20"
             : "bg-transparent"
-        }`}
+        )}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-8">
           {/* Logo */}
           <a href="#" className="group flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 transition-colors duration-300 group-hover:bg-white/15">
@@ -53,32 +138,80 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="text-lg font-bold tracking-tight text-white">
-              Zenith<span className="text-white/50"> X</span>
+              Zenith<span className="text-white/50">X</span>
             </span>
           </a>
 
-          {/* Desktop Links */}
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="group relative px-4 py-2 text-sm font-light tracking-wide text-white/60 transition-colors duration-300 hover:text-white"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-white/40 transition-all duration-300 group-hover:w-3/4" />
-              </Link>
-            ))}
+          {/* Desktop Spotlight Navbar */}
+          <div className="hidden md:flex justify-center">
+            <nav
+              ref={navRef}
+              className="spotlight-nav spotlight-nav-bg glass-border spotlight-nav-shadow relative h-11 rounded-full transition-all duration-300 overflow-hidden"
+            >
+              {/* Content */}
+              <ul className="relative flex items-center h-full px-2 gap-0 z-10">
+                {navItems.map((item, idx) => (
+                  <li key={idx} className="relative h-full flex items-center justify-center">
+                    <Link
+                      href={item.href}
+                      data-index={idx}
+                      onClick={() => handleItemClick(item, idx)}
+                      className={cn(
+                        "px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-full",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
+                        activeIndex === idx
+                          ? "text-white"
+                          : "text-neutral-400 hover:text-white"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              {/* 1. The Moving Spotlight (Follows Mouse) */}
+              <div
+                className="pointer-events-none absolute bottom-0 left-0 w-full h-full z-1 transition-opacity duration-300"
+                style={{
+                  opacity: hoverX !== null ? 1 : 0,
+                  background: `
+                    radial-gradient(
+                      120px circle at var(--spotlight-x) 100%, 
+                      rgba(255,255,255,0.15) 0%, 
+                      transparent 50%
+                    )
+                  `,
+                }}
+              />
+
+              {/* 2. The Active State Ambience (Stays on Active) */}
+              <div
+                className="pointer-events-none absolute bottom-0 left-0 w-full h-[2px] z-2"
+                style={{
+                  background: `
+                    radial-gradient(
+                      60px circle at var(--ambience-x) 0%, 
+                      rgba(255,255,255,1) 0%, 
+                      transparent 100%
+                    )
+                  `,
+                }}
+              />
+
+              {/* 3. Bottom Border Track (Subtle) */}
+              <div className="absolute bottom-0 left-0 w-full h-px bg-white/10 z-0" />
+            </nav>
           </div>
 
           {/* Desktop CTA */}
           <div className="hidden items-center gap-4 md:flex">
-            <button className="text-sm font-light tracking-wide text-white/60 transition-colors duration-300 hover:text-white">
+            <CreepyButton className="text-sm font-light tracking-wide text-white/60 transition-colors duration-300 hover:text-white">
               Sign In
-            </button>
-            <button className="rounded-full bg-white/10 px-5 py-2 text-sm font-medium tracking-wide text-white transition-all duration-300 hover:bg-white/20">
+            </CreepyButton>
+            <CreepyButton className="rounded-full bg-white/10 px-5 py-2 text-sm font-medium tracking-wide text-white transition-all duration-300 hover:bg-white/20">
               Shop Now
-            </button>
+            </CreepyButton>
           </div>
 
           {/* Mobile Hamburger */}
@@ -104,7 +237,7 @@ export default function Navbar() {
             />
           </button>
         </div>
-      </motion.nav>
+      </motion.header>
 
       {/* Mobile Menu */}
       <motion.div
@@ -116,28 +249,31 @@ export default function Navbar() {
         }}
         transition={{ duration: 0.3 }}
       >
-        {navLinks.map((link, i) => (
+        {navItems.map((item, i) => (
           <MotionLink
-            key={link.label}
-            href={link.href}
+            key={item.label}
+            href={item.href}
             className="text-2xl font-light tracking-wide text-white/80 transition-colors hover:text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={mobileOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: i * 0.1, duration: 0.4 }}
             onClick={() => setMobileOpen(false)}
           >
-            {link.label}
+            {item.label}
           </MotionLink>
         ))}
-        <motion.button
-          className="mt-4 rounded-full bg-white/10 px-8 py-3 text-sm font-medium tracking-wide text-white"
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={mobileOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ delay: 0.4, duration: 0.4 }}
-          onClick={() => setMobileOpen(false)}
         >
-          Shop Now
-        </motion.button>
+          <CreepyButton
+            className="mt-4 rounded-full bg-white/10 px-8 py-3 text-sm font-medium tracking-wide text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Shop Now
+          </CreepyButton>
+        </motion.div>
       </motion.div>
     </>
   );

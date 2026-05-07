@@ -2,6 +2,8 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CreepyButton from "@/components/ui/creepy-button";
+import ElectricBorder from "@/components/ui/ElectricBorder";
 import { motion } from "framer-motion";
 
 const wishlistItems = [
@@ -28,35 +30,42 @@ export default function WishlistPage() {
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {wishlistItems.map((item, idx) => (
-            <motion.div
+            <ElectricBorder
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-4"
+              color="rgba(255,255,255,0.35)"
+              speed={0.8}
+              chaos={0.06}
+              borderRadius={16}
             >
-              <div className="aspect-square overflow-hidden rounded-xl bg-[#121212]">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
-
-              <div className="mt-4">
-                <h2 className="text-lg font-medium text-white/90">{item.name}</h2>
-                <p className="text-xl font-bold text-white/70">{item.price}</p>
-                
-                <div className="mt-4 grid grid-cols-1 gap-2">
-                  <button className="w-full rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/90 active:scale-95">
-                    Move to Cart
-                  </button>
-                  <button className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/80 active:scale-95">
-                    Remove
-                  </button>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-4"
+              >
+                <div className="aspect-square overflow-hidden rounded-xl bg-[#121212]">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
-              </div>
-            </motion.div>
+
+                <div className="mt-4">
+                  <h2 className="text-lg font-medium text-white/90">{item.name}</h2>
+                  <p className="text-xl font-bold text-white/70">{item.price}</p>
+                  
+                  <div className="mt-4 grid grid-cols-1 gap-2">
+                    <CreepyButton className="w-full rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/90 active:scale-95">
+                      Move to Cart
+                    </CreepyButton>
+                    <CreepyButton className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/80 active:scale-95">
+                      Remove
+                    </CreepyButton>
+                  </div>
+                </div>
+              </motion.div>
+            </ElectricBorder>
           ))}
         </div>
       </div>

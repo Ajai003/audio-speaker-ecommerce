@@ -1,5 +1,7 @@
 "use client";
 
+import CreepyButton from "@/components/ui/creepy-button";
+
 const footerLinks = {
   Products: ["Zenith X Pro", "Zenith X Sport", "Zenith X Studio", "Accessories", "Compare"],
   Support: ["Help Center", "Warranty", "Returns", "Contact Us", "Firmware Updates"],
@@ -30,9 +32,9 @@ export default function Footer() {
               placeholder="your@email.com"
               className="flex-1 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white placeholder-white/30 outline-none transition-all duration-300 focus:border-white/25 focus:bg-white/8"
             />
-            <button className="shrink-0 rounded-full bg-white/10 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white/20">
+            <CreepyButton className="shrink-0 rounded-full bg-white/10 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-white/20">
               Subscribe
-            </button>
+            </CreepyButton>
           </div>
         </div>
 

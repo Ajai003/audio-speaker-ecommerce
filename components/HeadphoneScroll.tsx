@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import CreepyButton from "@/components/ui/creepy-button";
 
 const TOTAL_FRAMES = 240;
 const IMAGE_DIR = "/ezgif-16184cd03497a2b4-jpg";
@@ -246,13 +247,12 @@ function TextOverlay({
       </p>
       {section.isCTA && (
         <div className="pointer-events-auto mt-4 flex flex-col items-center gap-3 sm:flex-row">
-          <button className="group relative overflow-hidden rounded-full bg-white px-8 py-3.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]">
-            <span className="relative z-10">Shop Now — $399</span>
-            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-          </button>
-          <button className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:text-white">
+          <CreepyButton className="overflow-hidden rounded-full bg-white px-8 py-3.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+            Shop Now — $399
+          </CreepyButton>
+          <CreepyButton className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:text-white">
             Learn More
-          </button>
+          </CreepyButton>
         </div>
       )}
     </motion.div>

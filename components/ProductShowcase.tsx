@@ -3,6 +3,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import CreepyButton from "@/components/ui/creepy-button";
+import ElectricBorder from "@/components/ui/ElectricBorder";
 
 const products = [
   {
@@ -72,81 +74,88 @@ export default function ProductShowcase() {
         {/* Product cards */}
         <div className="grid gap-6 md:grid-cols-3">
           {products.map((product, i) => (
-            <motion.div
+            <ElectricBorder
               key={product.name}
-              className="glass-card group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-500 hover:bg-white/6"
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.7,
-                delay: 0.2 * i,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              color="rgba(255,255,255,0.35)"
+              speed={0.8}
+              chaos={0.06}
+              borderRadius={16}
             >
-              {/* Badge */}
-              <div className="absolute top-4 left-4 z-10">
-                <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-widest text-white/80 backdrop-blur-sm">
-                  {product.badge}
-                </span>
-              </div>
-
-              {/* Image */}
-              <div className="relative aspect-4/3 w-full overflow-hidden bg-[#1a1a1a]">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-[#1a1a1a] via-transparent to-transparent" />
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-1 flex-col p-6">
-                <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
-                  {product.color}
-                </p>
-                <h3 className="mt-1 text-xl font-bold tracking-tight text-white/90">
-                  {product.name}
-                </h3>
-                <p className="mt-0.5 text-sm font-light text-white/50">
-                  {product.tagline}
-                </p>
-
-                {/* Features list */}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {product.features.map((feat) => (
-                    <span
-                      key={feat}
-                      className="rounded-full border border-white/8 px-2.5 py-1 text-[10px] font-light text-white/50"
-                    >
-                      {feat}
-                    </span>
-                  ))}
+              <motion.div
+                className="glass-card group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-500 hover:bg-white/6"
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.2 * i,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {/* Badge */}
+                <div className="absolute top-4 left-4 z-10">
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-widest text-white/80 backdrop-blur-sm">
+                    {product.badge}
+                  </span>
                 </div>
 
-                {/* Price + CTA */}
-                <div className="mt-auto flex items-end justify-between pt-6">
-                  <div>
-                    <span className="text-2xl font-bold tracking-tight text-white/90">
-                      {product.price}
-                    </span>
-                    <span className="ml-2 text-sm text-white/30 line-through">
-                      {product.originalPrice}
-                    </span>
+                {/* Image */}
+                <div className="relative aspect-4/3 w-full overflow-hidden bg-[#1a1a1a]">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#1a1a1a] via-transparent to-transparent" />
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
+                    {product.color}
+                  </p>
+                  <h3 className="mt-1 text-xl font-bold tracking-tight text-white/90">
+                    {product.name}
+                  </h3>
+                  <p className="mt-0.5 text-sm font-light text-white/50">
+                    {product.tagline}
+                  </p>
+
+                  {/* Features list */}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {product.features.map((feat) => (
+                      <span
+                        key={feat}
+                        className="rounded-full border border-white/8 px-2.5 py-1 text-[10px] font-light text-white/50"
+                      >
+                        {feat}
+                      </span>
+                    ))}
                   </div>
-                  <button className="rounded-full bg-white/10 px-5 py-2.5 text-xs font-medium tracking-wide text-white transition-all duration-300 hover:bg-white/20 hover:scale-105">
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
 
-              {/* Hover glow */}
-              <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.04)_0%,transparent_50%)]" />
-              </div>
-            </motion.div>
+                  {/* Price + CTA */}
+                  <div className="mt-auto flex items-end justify-between pt-6">
+                    <div>
+                      <span className="text-2xl font-bold tracking-tight text-white/90">
+                        {product.price}
+                      </span>
+                      <span className="ml-2 text-sm text-white/30 line-through">
+                        {product.originalPrice}
+                      </span>
+                    </div>
+                    <CreepyButton className="rounded-full bg-white/10 px-5 py-2.5 text-xs font-medium tracking-wide text-white transition-all duration-300 hover:bg-white/20">
+                      Add to Cart
+                    </CreepyButton>
+                  </div>
+                </div>
+
+                {/* Hover glow */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                  <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.04)_0%,transparent_50%)]" />
+                </div>
+              </motion.div>
+            </ElectricBorder>
           ))}
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import ElectricBorder from "@/components/ui/ElectricBorder";
 
 const features = [
   {
@@ -98,44 +99,51 @@ export default function FeaturesSection() {
         {/* Feature cards grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, i) => (
-            <motion.div
+            <ElectricBorder
               key={feature.title}
-              className="glass-card group relative rounded-2xl p-6 transition-all duration-500 hover:bg-white/6"
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.6,
-                delay: 0.15 * i,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              color="rgba(255,255,255,0.4)"
+              speed={0.8}
+              chaos={0.06}
+              borderRadius={16}
             >
-              {/* Stat badge */}
-              <div className="mb-6 flex items-start justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-white/70 transition-colors duration-300 group-hover:bg-white/10 group-hover:text-white">
-                  {feature.icon}
+              <motion.div
+                className="glass-card group relative rounded-2xl p-6 transition-all duration-500 hover:bg-white/6"
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15 * i,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {/* Stat badge */}
+                <div className="mb-6 flex items-start justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-white/70 transition-colors duration-300 group-hover:bg-white/10 group-hover:text-white">
+                    {feature.icon}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold tracking-tight text-white/80">
+                      {feature.stat}
+                    </p>
+                    <p className="text-[10px] uppercase tracking-widest text-white/30">
+                      {feature.statLabel}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold tracking-tight text-white/80">
-                    {feature.stat}
-                  </p>
-                  <p className="text-[10px] uppercase tracking-widest text-white/30">
-                    {feature.statLabel}
-                  </p>
+
+                <h3 className="mb-2 text-base font-semibold tracking-tight text-white/90">
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed font-light text-white/50">
+                  {feature.description}
+                </p>
+
+                {/* Hover glow */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                  <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.06)_0%,transparent_60%)]" />
                 </div>
-              </div>
-
-              <h3 className="mb-2 text-base font-semibold tracking-tight text-white/90">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed font-light text-white/50">
-                {feature.description}
-              </p>
-
-              {/* Hover glow */}
-              <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.06)_0%,transparent_60%)]" />
-              </div>
-            </motion.div>
+              </motion.div>
+            </ElectricBorder>
           ))}
         </div>
       </div>
